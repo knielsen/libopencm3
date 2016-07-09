@@ -186,7 +186,11 @@ The various modes possible are described in the reference manual.
 
 void adc_set_multi_mode(uint32_t mode)
 {
-	ADC_CCR |= mode;
+	uint32_t reg32 = ADC_CCR;
+
+	reg32 &= ~(ADC_CCR_MULTI_MASK|ADC_CCR_DMA_MASK|ADC_CCR_DELAY_MASK);
+	reg32 |= mode;
+	ADC_CCR = reg32;
 }
 
 /*---------------------------------------------------------------------------*/
