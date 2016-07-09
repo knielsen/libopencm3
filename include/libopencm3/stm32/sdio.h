@@ -80,9 +80,9 @@
 
 #define SDIO_POWER_PWRCTRL_SHIFT	0
 #define SDIO_POWER_PWRCTRL_PWROFF	(0x0 << SDIO_POWER_PWRCTRL_SHIFT)
-/* what does "10: Reserved power-up" mean? */
-#define SDIO_POWER_PWRCTRL_RSVPWRUP	(0x2 << SDIO_POWER_PWRCTRL_SHIFT)
+#define SDIO_POWER_PWRCTRL_PWRUP	(0x2 << SDIO_POWER_PWRCTRL_SHIFT)
 #define SDIO_POWER_PWRCTRL_PWRON	(0x3 << SDIO_POWER_PWRCTRL_SHIFT)
+#define SDIO_POWER_PWRCTRL_MASK		(0x3 << SDIO_POWER_PWRCTRL_SHIFT)
 
 
 /* --- SDIO_POWER values --------------------------------------------------- */
@@ -99,6 +99,7 @@
 #define SDIO_CLKCR_WIDBUS_1		(0x0 << SDIO_CLKCR_WIDBUS_SHIFT)
 #define SDIO_CLKCR_WIDBUS_4		(0x1 << SDIO_CLKCR_WIDBUS_SHIFT)
 #define SDIO_CLKCR_WIDBUS_8		(0x2 << SDIO_CLKCR_WIDBUS_SHIFT)
+#define SDIO_CLKCR_WIDBUS_MASK		(0x3 << SDIO_CLKCR_WIDBUS_SHIFT)
 
 /* BYPASS: Clock divider bypass enable bit */
 #define SDIO_CLKCR_BYPASS		(1 << 10)
@@ -199,6 +200,7 @@
 #define SDIO_DCTRL_DBLOCKSIZE_12	(0xC << SDIO_DCTRL_DBLOCKSIZE_SHIFT)
 #define SDIO_DCTRL_DBLOCKSIZE_13	(0xD << SDIO_DCTRL_DBLOCKSIZE_SHIFT)
 #define SDIO_DCTRL_DBLOCKSIZE_14	(0xE << SDIO_DCTRL_DBLOCKSIZE_SHIFT)
+#define SDIO_DCTRL_DBLOCKSIZE_MASK	(0xF << SDIO_DCTRL_DBLOCKSIZE_SHIFT)
 
 /* DMAEN: DMA enable bit */
 #define SDIO_DCTRL_DMAEN		(1 << 3)
@@ -419,7 +421,25 @@
 /* --- Function prototypes ------------------------------------------------- */
 
 
-/* TODO */
-
+void sdio_set_data_length(uint32_t length);
+void sdio_set_data_timeout(uint32_t timeout);
+void sdio_data_transfer(bool read, bool stream, uint32_t blocksize);
+bool sdio_get_flag(uint32_t flags);
+void sdio_clear_flag(uint32_t flags);
+uint32_t sdio_get_power_state(void);
+void sdio_set_power_state(uint32_t state);
+uint32_t sdio_get_status_response(uint32_t reg);
+uint32_t sdio_get_command_response(void);
+void sdio_enable(void);
+void sdio_disable(void);
+void sdio_set_widemode(uint32_t mode);
+uint32_t sdio_read_fifo(void);
+void sdio_write_fifo(uint32_t value);
+void sdio_enable_interrupts(uint32_t ints);
+void sdio_disable_interrupts(uint32_t ints);
+void sdio_enable_dma(void);
+void sdio_disable_dma(void);
+void sdio_send_cmd(uint32_t cmdindex, uint32_t waitresp, uint32_t flags,
+		   uint32_t arg);
 
 #endif
